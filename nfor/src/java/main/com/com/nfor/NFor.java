@@ -4,7 +4,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-public class NFor<T extends Number & Comparable<T>> extends NForPart<T> implements Iterable<T[]> {
+/**
+ * Represents a {@link Iterable} of {@code n} nested {@code for} loops.
+ *
+ * @param <T> The {@link Class} for this {@link NFor}.  Must be one of the boxed, primitive numerics.
+ */
+public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> implements Iterable<T[]> {
 
     private NForWhile<T> to;
 
@@ -17,8 +22,14 @@ public class NFor<T extends Number & Comparable<T>> extends NForPart<T> implemen
         this.to = to;
     }
 
-    public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> noCondition(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.NO_CONDITION, value);
+    /**
+     * Creates an {@link NForWhile.NForWhileTerm NForWhileTerm} with <strong>no condition</strong>.
+     *
+     * @param <U> The {@link Class} for the {@link NFor} to apply this to.
+     * @return
+     */
+    public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> noCondition() {
+        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.NO_CONDITION, null);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> notEqualTo(U value) {

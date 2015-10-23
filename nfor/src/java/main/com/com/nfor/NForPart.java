@@ -109,22 +109,24 @@ class NForPart<T extends Number & Comparable<T>> {
 
     private static <U extends Number & Comparable<U>> NForBy<U> defaultBy(Class clazz, int n) {
         List<U> list = new ArrayList<>(n);
+        U toAdd;
+        if (clazz == Byte.class) {
+            toAdd = (U) Byte.valueOf((byte) 1);
+        } else if (clazz == Short.class) {
+            toAdd = (U) Short.valueOf((short) 1);
+        } else if (clazz == Integer.class) {
+            toAdd = (U) Integer.valueOf(1);
+        } else if (clazz == Long.class) {
+            toAdd = (U) Long.valueOf(1l);
+        } else if (clazz == Float.class) {
+            toAdd = (U) Float.valueOf(1f);
+        } else if (clazz == Double.class) {
+            toAdd = (U) Double.valueOf(1d);
+        } else {
+            throw new UnsupportedOperationException(String.format("Unsupported class %s", clazz.getSimpleName()));
+        }
         for (int i = 0; i < n; i++) {
-            if (clazz == Byte.class) {
-                list.add((U) Byte.valueOf((byte) 1));
-            } else if (clazz == Short.class) {
-                list.add((U) Short.valueOf((short) 1));
-            } else if (clazz == Integer.class) {
-                list.add((U) Integer.valueOf(1));
-            } else if (clazz == Long.class) {
-                list.add((U) Long.valueOf(1l));
-            } else if (clazz == Float.class) {
-                list.add((U) Float.valueOf(1f));
-            } else if (clazz == Double.class) {
-                list.add((U) Double.valueOf(1d));
-            } else {
-                throw new UnsupportedOperationException(String.format("Unsupported class %s", clazz.getSimpleName()));
-            }
+            list.add(toAdd);
         }
         return new NForBy<U>(list.toArray((U[]) Array.newInstance(clazz, n)));
     }

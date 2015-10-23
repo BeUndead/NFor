@@ -9,6 +9,7 @@ import java.util.List;
 import static com.com.nfor.NFor.greaterThan;
 import static com.com.nfor.NFor.greaterThanOrEqualTo;
 import static com.com.nfor.NFor.lessThan;
+import static com.com.nfor.NFor.lessThanOrEqualTo;
 import static com.com.nfor.NFor.notEqualTo;
 
 public class NForTest {
@@ -36,6 +37,17 @@ public class NForTest {
         Assert.assertEquals("Lengths did not match", fromActualLoopList.size(), fromNForLoopList.size());
         Assert.assertArrayEquals("Values did not match",
                                  fromActualLoopList.toArray(), fromNForLoopList.toArray());
+    }
+
+    @Test
+    public void testNForWithOtherClass() throws Exception {
+        NFor<Double> nfor = NFor.of(Double.class).from(0d, 0d, 0d).by(.5d, .5d, .5d)
+                .to(lessThanOrEqualTo(3d), lessThanOrEqualTo(3d), lessThanOrEqualTo(3d));
+        int loops = 0;
+        for (Double[] indices : nfor) {
+            loops++;
+        }
+        Assert.assertEquals("Unexpected number of loops", 7*7*7, loops);
     }
 
 }

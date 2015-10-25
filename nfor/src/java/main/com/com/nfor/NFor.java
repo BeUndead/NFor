@@ -4,30 +4,27 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-/**
- * Represents a {@link Iterable} of {@code n} nested {@code for} loops.
- *
- * @param <T> The {@link Class} for this {@link NFor}.  Must be one of the boxed, primitive numerics.
- */
 public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> implements Iterable<T[]> {
 
     private NForWhile<T> to;
+    private NForIterator iterator;
 
     NFor(NForPart<T> part, NForWhile<T> to) {
         this.clazz = part.clazz;
         this.n = part.n;
         this.from = part.from;
         this.by = part.by;
-
         this.to = to;
+        verify();
+        this.iterator = new NForIterator();
     }
 
-    /**
-     * Creates an {@link NForWhile.NForWhileTerm NForWhileTerm} with <strong>no condition</strong>.
-     *
-     * @param <U> The {@link Class} for the {@link NFor} to apply this to.
-     * @return
-     */
+    private void verify() {
+        if (n < 1 || from.size() != n || by.size() != n || to.size() != n) {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> noCondition() {
         return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.NO_CONDITION, null);
     }
@@ -58,7 +55,7 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
 
     @Override
     public Iterator<T[]> iterator() {
-        return new NForIterator();
+        return iterator;
     }
 
     final class NForIterator implements Iterator<T[]> {
@@ -171,4 +168,5 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
         }
 
     }
+
 }

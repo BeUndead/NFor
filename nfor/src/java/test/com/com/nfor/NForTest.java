@@ -3,6 +3,7 @@ package com.com.nfor;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,26 @@ public class NForTest {
             loops++;
         }
         Assert.assertEquals("Unexpected number of loops", 7*7*7, loops);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNForWithIllegalOfArgument() throws Exception {
+        NFor.of(BigInteger.class);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNForWithIllegalFirstArgument() throws Exception {
+        NFor.of(Integer.class).from(0, 0).by(1, 1, 1).to(3, 3, 3);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNForWithIllegalSecondArgument() throws Exception {
+        NFor.of(Integer.class).from(0, 0, 0).by(1, 1).to(3, 3, 3);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNForWithIllegalThirdArgument() throws Exception {
+        NFor.of(Integer.class).from(0, 0, 0).by(1, 1, 1).to(3, 3);
     }
 
 }

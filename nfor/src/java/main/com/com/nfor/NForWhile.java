@@ -8,6 +8,10 @@ final class NForWhile<T extends Number & Comparable<T>> {
         this.terms = terms;
     }
 
+    public int size() {
+        return terms.length;
+    }
+
     final NForWhileTerm[] get() {
         return terms;
     }

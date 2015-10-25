@@ -62,6 +62,10 @@ class NForPart<T extends Number & Comparable<T>> {
     }
 
     public NFor to(T... to) {
+        if (to.length != n) {
+            throw new IllegalArgumentException(String.format("to was the wrong length, expecting %d but received %d",
+                                                             n, to.length));
+        }
         List<NForWhile.NForWhileTerm<T>> terms = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             terms.add(new NForWhile.NForWhileTerm<T>(NForWhile.NForWhileCondition.LESS_THAN, to[i]));
@@ -107,7 +111,7 @@ class NForPart<T extends Number & Comparable<T>> {
         return new NForFrom<U>(list.toArray((U[]) Array.newInstance(clazz, n)));
     }
 
-    private static <U extends Number & Comparable<U>> NForBy<U> defaultBy(Class clazz, int n) {
+    private static final <U extends Number & Comparable<U>> NForBy<U> defaultBy(final Class clazz, final int n) {
         List<U> list = new ArrayList<>(n);
         U toAdd;
         if (clazz == Byte.class) {

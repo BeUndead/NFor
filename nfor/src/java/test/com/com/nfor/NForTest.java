@@ -7,11 +7,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.com.nfor.NFor.greaterThan;
-import static com.com.nfor.NFor.greaterThanOrEqualTo;
-import static com.com.nfor.NFor.lessThan;
-import static com.com.nfor.NFor.lessThanOrEqualTo;
-import static com.com.nfor.NFor.notEqualTo;
+import static com.com.nfor.NFor.*;
 
 public class NForTest {
 
@@ -69,6 +65,29 @@ public class NForTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNForWithIllegalThirdArgument() throws Exception {
         NFor.of(Integer.class).from(0, 0, 0).by(1, 1, 1).to(3, 3);
+    }
+
+    @Test
+    public void testInfiniteLoop() throws Exception {
+        int BREAK_POINT = 10000;
+        NFor<Integer> nfor = NFor.of(Integer.class).from(0, 0).by(1, 1).to(noCondition(), lessThanOrEqualTo(1));
+        int counter = 0;
+        for (Integer[] indices : nfor) {
+            if (++counter == BREAK_POINT) {
+                break;
+            }
+        }
+        Assert.assertEquals("Looped for less than expected amount", BREAK_POINT, counter);
+    }
+
+    @Test
+    public void testEmptyLoop() throws Exception {
+        NFor<Integer> nfor = NFor.of(Integer.class).from(0, 0).by(1, 1).to(lessThan(-1), lessThan(-1));
+        int counter = 0;
+        for (Integer[] indices : nfor) {
+            counter++;
+        }
+        Assert.assertEquals("Looped in empty loop", 0, counter);
     }
 
 }

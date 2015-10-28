@@ -62,6 +62,9 @@ class NForPart<T extends Number & Comparable<T>> {
     }
 
     public NFor to(T... to) {
+        if (this.n == 0) {
+            this.n = to.length;
+        }
         if (to.length != n) {
             throw new IllegalArgumentException(String.format("to was the wrong length, expecting %d but received %d",
                                                              n, to.length));

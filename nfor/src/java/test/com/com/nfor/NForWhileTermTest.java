@@ -49,7 +49,7 @@ public class NForWhileTermTest {
     @Test
     public void testConditionLessThanOrEqual() throws Exception {
 
-        NForWhileCondition condition = NForWhileCondition.LESS_THAN_OR_EQUAL;
+        NForWhileCondition condition = NForWhileCondition.LESS_THAN_OR_EQUAL_TO;
         NForWhile.NForWhileTerm<Integer> term = new NForWhile.NForWhileTerm(condition, BASE);
         assertTrue("Condition was incorrect for a lower value", term.isMetFor(LOWER));
         assertTrue("Condition was incorrect for the same value", term.isMetFor(SAME));
@@ -69,7 +69,7 @@ public class NForWhileTermTest {
     @Test
     public void testConditionGreaterThanOrEqual() throws Exception {
 
-        NForWhileCondition condition = NForWhileCondition.GREATER_THAN_OR_EQUAL;
+        NForWhileCondition condition = NForWhileCondition.GREATER_THAN_OR_EQUAL_TO;
         NForWhile.NForWhileTerm<Integer> term = new NForWhile.NForWhileTerm(condition, BASE);
         assertFalse("Condition was incorrect for a lower value", term.isMetFor(LOWER));
         assertTrue("Condition was incorrect for the same value", term.isMetFor(SAME));

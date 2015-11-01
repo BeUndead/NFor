@@ -20,9 +20,9 @@ final class NForWhile<T extends Number & Comparable<T>> {
         NO_CONDITION,
         NOT_EQUAL_TO,
         LESS_THAN,
-        LESS_THAN_OR_EQUAL,
+        LESS_THAN_OR_EQUAL_TO,
         EQUAL_TO,
-        GREATER_THAN_OR_EQUAL,
+        GREATER_THAN_OR_EQUAL_TO,
         GREATER_THAN;
     }
 
@@ -44,11 +44,11 @@ final class NForWhile<T extends Number & Comparable<T>> {
                     return value.compareTo(at) != 0;
                 case LESS_THAN:
                     return value.compareTo(at) < 0;
-                case LESS_THAN_OR_EQUAL:
+                case LESS_THAN_OR_EQUAL_TO:
                     return value.compareTo(at) <= 0;
                 case EQUAL_TO:
                     return value.compareTo(at) == 0;
-                case GREATER_THAN_OR_EQUAL:
+                case GREATER_THAN_OR_EQUAL_TO:
                     return value.compareTo(at) >= 0;
                 case GREATER_THAN:
                     return value.compareTo(at) > 0;

@@ -38,7 +38,7 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> lessThanOrEqualTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.LESS_THAN_OR_EQUAL, value);
+        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.LESS_THAN_OR_EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> equalTo(U value) {
@@ -46,7 +46,7 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> greaterThanOrEqualTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.GREATER_THAN_OR_EQUAL, value);
+        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.GREATER_THAN_OR_EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> greaterThan(U value) {
@@ -63,7 +63,7 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
         private T[] indices;
         private T[] next;
         private boolean started = false;
-        private int lastValidLoop = n;
+        private int firstEmptyLoop = n;
 
         NForIterator() {
         }
@@ -80,62 +80,57 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
 
         @Override
         public T[] next() {
-            // Use next if it has already been calculated
-            if (this.next != null) {
-                this.indices = next.clone();
-                // Set next as null to avoid confusion for next iteration
-                this.next = null;
+            // If next has already been set; use, reset it and return
+            if (next != null) {
+                indices = next.clone();
+                next = null;
                 return indices;
             } else {
-                // Otherwise use doNext directly
-                this.indices = doNext();
-                if (this.indices == null) {
-                    throw new NoSuchElementException();
-                }
-                // Set next as null to avoid confusion for next iteration
-                this.next = null;
+                // Otherwise, call doNext directly
+                indices = doNext();
                 return indices;
             }
         }
 
         private T[] doNext() {
+            // If this is the first call, we need to do some initial checks
             if (!started) {
                 started = true;
-                // Reduce n to first match
+                // Check for the first empty loop
                 for (int i = 0; i < n; i++) {
-                    if (!to.get()[i].isMetFor(from.get()[i])) {
-                        lastValidLoop = i;
+                    NForWhile.NForWhileTerm<T> term = to.get()[i];
+                    if (!term.isMetFor(from.get()[i])) {
+                        firstEmptyLoop = i;
                         break;
                     }
                 }
-                if (IntStream.range(0, n).allMatch(i -> !to.get()[i].isMetFor(from.get()[i]))) {
-                    // Initial term is not valid, propogate exception
+                // If the first loop is empty, immediately break
+                if (firstEmptyLoop == 0) {
                     throw new NoSuchElementException();
                 }
-                // Set the indices using from.get()
+
+                // At this point, first loop is non-empty, and firstEmptyLoop is set
+                // Set indices to their initial values
                 reset();
                 return indices;
             }
+
+            // If it is not the first iteration, then compute the next values using a copy
             T[] indicesCopy = indices.clone();
-            int whereToStart = n - 1;
-            for (int i = lastValidLoop - 1; i >= 0; i--) {
-                NForWhile.NForWhileTerm term = to.get()[i];
-                if (!term.isMetFor(indicesCopy[i])) {
-                    whereToStart = i;
-                }
-            }
-            for (int i = whereToStart; i >= 0; i--) {
-                NForWhile.NForWhileTerm term = to.get()[i];
-                if (!term.isMetFor(indicesCopy[i])) {
-                    continue;
-                } else if (term.isMetFor(add(indicesCopy[i], by.get()[i]))) {
+            for (int i = firstEmptyLoop - 1; i >= 0; i--) {
+                NForWhile.NForWhileTerm<T> term = to.get()[i];
+                // If we can advance this term, do so and return
+                if (term.isMetFor(add(indicesCopy[i], by.get()[i]))) {
                     indicesCopy[i] = add(indicesCopy[i], by.get()[i]);
                     return indicesCopy;
                 } else {
+                    // Otherwise, we must reset this index and continue
                     indicesCopy[i] = from.get()[i];
                 }
             }
-            return null;
+            // If we reach here, we have reset all indices, without finding one we can advance
+            // This means we are done looping
+            throw new NoSuchElementException();
         }
 
         private void reset() {

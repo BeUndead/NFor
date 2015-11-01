@@ -91,4 +91,14 @@ public class NForTest {
         Assert.assertEquals("Looped in empty loop", 0, counter);
     }
 
+    @Test
+    public void testEmptyLoopWithNonEmptyInnerLoop() throws Exception {
+        NFor<Integer> nfor = NFor.of(Integer.class).from(0, 0).by(1, 1).to(lessThan(-1), lessThan(2));
+        int counter = 0;
+        for (Integer[] indices : nfor) {
+            counter++;
+        }
+        Assert.assertEquals("Looped in empty loop", 0, counter);
+    }
+
 }

@@ -4,6 +4,7 @@ final class NForFrom<T extends Number & Comparable<T>> {
 
     private final T[] from;
 
+    @SafeVarargs
     NForFrom(final T... from) {
         this.from = from;
     }

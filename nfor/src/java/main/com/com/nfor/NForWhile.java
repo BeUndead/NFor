@@ -23,7 +23,7 @@ final class NForWhile<T extends Number & Comparable<T>> {
         LESS_THAN_OR_EQUAL_TO,
         EQUAL_TO,
         GREATER_THAN_OR_EQUAL_TO,
-        GREATER_THAN;
+        GREATER_THAN
     }
 
     protected static final class NForWhileTerm<U extends Number & Comparable<U>> {
@@ -31,7 +31,7 @@ final class NForWhile<T extends Number & Comparable<T>> {
         private final NForWhileCondition condition;
         private final U at;
 
-        protected NForWhileTerm(NForWhileCondition condition, U at) {
+        NForWhileTerm(NForWhileCondition condition, U at) {
             this.condition = condition;
             this.at = at;
         }

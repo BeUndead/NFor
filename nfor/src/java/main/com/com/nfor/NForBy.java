@@ -4,6 +4,7 @@ final class NForBy<T extends Number & Comparable<T>> {
 
     private final T[] by;
 
+    @SafeVarargs
     NForBy(final T... by) {
         this.by = by;
     }

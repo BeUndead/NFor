@@ -2,12 +2,65 @@ package com.com.nfor;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
 
+/**
+ * Provides a simple {@link Iterable} {@link Object} to simplify the construction of {@code n}-nested {@code for}-loops.
+ * The usage is as follows:
+ * <pre>
+ *     {@code
+ *     NFor<Integer> nfor = NFor.of(Integer.class)
+ *             .from(0, 0, 0)
+ *             .by(1, 1, 1)
+ *             .to(3, 3, 3);
+ *
+ *     for (Integer[] indices : nfor) {
+ *         // Do stuff
+ *     }}
+ * </pre>
+ * This would then provide the same iteration as:
+ * <pre>
+ *     {@code
+ *     for (int i = 0; i < 3; i++) {
+ *         for (int j = 0; j < 3; j++) {
+ *             for (int k = 0; k < 3; k++) {
+ *                 // Do stuff
+ *             }
+ *         }
+ *     }}
+ * </pre>
+ * <p>
+ * For more complex looping, additional methods are provided.  For example, in order to perform an equivalent loop to
+ * the following:
+ * <pre>
+ *     {@code
+ *     for (int i = 1; i >= -5; i -= 2) {
+ *         for (int j = 5; j != 10; j++) {
+ *             for (int k = 10; ; k++) {
+ *                 // Do stuff
+ *             }
+ *         }
+ *     }}
+ * </pre>
+ * the following can be used (with {@code import static NFor.*} for utility methods):
+ * <pre>
+ *     {@code
+ *     NFor<Integer> nfor = NFor.of(Integer.class)
+ *             .from(1, 5, 10)
+ *             .by(-2, 1, 0)
+ *             .to(greaterThanOrEqualTo(-5), notEqualTo(10), noCondition());
+ *
+ *     for (Integer[] indices : nfor) {
+ *         // Do stuff
+ *     }}
+ * </pre>
+ *
+ * @param <T> The {@link java.lang.reflect.Array}-{@link java.lang.reflect.Type} which the instanced {@link NFor} will
+ *            be iterating over.
+ */
 public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> implements Iterable<T[]> {
 
-    private NForWhile<T> to;
-    private NForIterator iterator;
+    private final NForWhile<T> to;
+    private final NForIterator iterator;
 
     NFor(NForPart<T> part, NForWhile<T> to) {
         this.clazz = part.clazz;
@@ -26,31 +79,31 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> noCondition() {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.NO_CONDITION, null);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.NO_CONDITION, null);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> notEqualTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.NOT_EQUAL_TO, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.NOT_EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> lessThan(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.LESS_THAN, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.LESS_THAN, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> lessThanOrEqualTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.LESS_THAN_OR_EQUAL_TO, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.LESS_THAN_OR_EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> equalTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.EQUAL_TO, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> greaterThanOrEqualTo(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.GREATER_THAN_OR_EQUAL_TO, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.GREATER_THAN_OR_EQUAL_TO, value);
     }
 
     public static final <U extends Number & Comparable<U>> NForWhile.NForWhileTerm<U> greaterThan(U value) {
-        return new NForWhile.NForWhileTerm<U>(NForWhile.NForWhileCondition.GREATER_THAN, value);
+        return new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.GREATER_THAN, value);
     }
 
     @Override
@@ -145,19 +198,19 @@ public final class NFor<T extends Number & Comparable<T>> extends NForPart<T> im
                 Short sum = (short) (a.shortValue() + b.shortValue());
                 return (T) sum;
             } else if (a instanceof Integer) {
-                Integer sum = (int) (a.intValue() + b.intValue());
+                Integer sum = a.intValue() + b.intValue();
                 return (T) sum;
             } else if (a instanceof Long) {
-                Long sum = (long) (a.longValue() + b.longValue());
+                Long sum = a.longValue() + b.longValue();
                 return (T) sum;
             } else if (a instanceof Float) {
-                Float sum = (float) (a.floatValue() + b.floatValue());
+                Float sum = a.floatValue() + b.floatValue();
                 return (T) sum;
             } else if (a instanceof Double) {
-                Double sum = (double) (a.doubleValue() + b.doubleValue());
+                Double sum = a.doubleValue() + b.doubleValue();
                 return (T) sum;
             } else { // Attempt to resolve as double; this is not always possible.
-                Double sum = (double) (a.doubleValue() + b.doubleValue());
+                Double sum = a.doubleValue() + b.doubleValue();
                 return (T) sum;
             }
         }

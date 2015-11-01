@@ -9,7 +9,7 @@ public class NForFromTest {
 
     @Test
     public void testFromForByte() {
-        NForFrom<Byte> nForFrom = new NForFrom<Byte>((byte) 1, (byte) 2, (byte) 3);
+        NForFrom<Byte> nForFrom = new NForFrom<>((byte) 1, (byte) 2, (byte) 3);
         Byte[] retrieved = nForFrom.get();
         Byte[] expected = new Byte[] {(byte) 1, (byte) 2, (byte) 3};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
@@ -20,7 +20,7 @@ public class NForFromTest {
 
     @Test
     public void testFromForShort() {
-        NForFrom<Short> nForFrom = new NForFrom<Short>((short) 1, (short) 2, (short) 3);
+        NForFrom<Short> nForFrom = new NForFrom<>((short) 1, (short) 2, (short) 3);
         Short[] retrieved = nForFrom.get();
         Short[] expected = new Short[] {(short) 1, (short) 2, (short) 3};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
@@ -31,7 +31,7 @@ public class NForFromTest {
 
     @Test
     public void testFromForInteger() {
-        NForFrom<Integer> nForFrom = new NForFrom<Integer>(1, 2, 3);
+        NForFrom<Integer> nForFrom = new NForFrom<>(1, 2, 3);
         Integer[] retrieved = nForFrom.get();
         Integer[] expected = new Integer[] {1, 2, 3};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
@@ -42,7 +42,7 @@ public class NForFromTest {
 
     @Test
     public void testFromForLong() {
-        NForFrom<Long> nForFrom = new NForFrom<Long>(1L, 2L, 3L);
+        NForFrom<Long> nForFrom = new NForFrom<>(1L, 2L, 3L);
         Long[] retrieved = nForFrom.get();
         Long[] expected = new Long[] {1L, 2L, 3L};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
@@ -53,9 +53,9 @@ public class NForFromTest {
 
     @Test
     public void testFromForFloat() {
-        NForFrom<Float> nForFrom = new NForFrom<Float>(1F, 2F, 3F);
+        NForFrom<Float> nForFrom = new NForFrom<>(1f, 2f, 3f);
         Float[] retrieved = nForFrom.get();
-        Float[] expected = new Float[] {1F, 2F, 3F};
+        Float[] expected = new Float[] {1f, 2f, 3f};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
         IntStream.range(0, expected.length).forEach(
                 i -> Assert.assertEquals(String.format("Unexpected value for index %d", i),
@@ -64,9 +64,9 @@ public class NForFromTest {
 
     @Test
     public void testFromForDouble() {
-        NForFrom<Double> nForFrom = new NForFrom<Double>(1D, 2D, 3D);
+        NForFrom<Double> nForFrom = new NForFrom<>(1d, 2d, 3d);
         Double[] retrieved = nForFrom.get();
-        Double[] expected = new Double[] {1D, 2D, 3D};
+        Double[] expected = new Double[] {1d, 2d, 3d};
         Assert.assertEquals("Unexpected length", expected.length, nForFrom.get().length);
         IntStream.range(0, expected.length).forEach(
                 i -> Assert.assertEquals(String.format("Unexpected value for index %d", i),
@@ -75,7 +75,7 @@ public class NForFromTest {
 
     @Test
     public void testFromSize() {
-        NForFrom<Integer> nForFrom = new NForFrom<Integer>(1, 2, 3);
+        NForFrom<Integer> nForFrom = new NForFrom<>(1, 2, 3);
         Assert.assertEquals("Unexpected length", 3, nForFrom.size());
     }
 

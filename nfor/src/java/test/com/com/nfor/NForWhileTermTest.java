@@ -13,9 +13,6 @@ public class NForWhileTermTest {
     private static final Integer SAME = 0;
     private static final Integer HIGHER = 1;
 
-    private static final NForWhile<Integer> nForWhile = new NForWhile<>();
-    private NForWhile.NForWhileTerm term;
-
     @Test
     public void testConditionNoCondition() throws Exception {
 

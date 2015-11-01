@@ -17,10 +17,10 @@ class NForPart<T extends Number & Comparable<T>> {
         SUPPORTED_CLASSES.add(Double.class);
     }
 
-    protected Class<T> clazz;
-    protected int n = 0;
-    protected NForFrom<T> from;
-    protected NForBy<T> by;
+    Class<T> clazz;
+    int n = 0;
+    NForFrom<T> from;
+    NForBy<T> by;
 
     NForPart() {
     }
@@ -39,29 +39,32 @@ class NForPart<T extends Number & Comparable<T>> {
         return this;
     }
 
-    public NForPart from(T... from) {
+    @SafeVarargs
+    public final NForPart from(T... from) {
         if (this.n == 0) {
             this.n = from.length;
         } else if (this.n != from.length) {
             throw new IllegalArgumentException(String.format("from was the wrong length, expecting %d but received %d",
                                                              n, from.length));
         }
-        this.from = new NForFrom<T>(from);
+        this.from = new NForFrom<>(from);
         return this;
     }
 
-    public NForPart by(T... by) {
+    @SafeVarargs
+    public final NForPart by(T... by) {
         if (this.n == 0) {
             this.n = by.length;
         } else if (this.n != by.length) {
             throw new IllegalArgumentException(String.format("by was the wrong length, expecting %d but received %d",
                                                              n, by.length));
         }
-        this.by = new NForBy<T>(by);
+        this.by = new NForBy<>(by);
         return this;
     }
 
-    public NFor to(T... to) {
+    @SafeVarargs
+    public final NFor to(T... to) {
         if (this.n == 0) {
             this.n = to.length;
         }
@@ -71,12 +74,13 @@ class NForPart<T extends Number & Comparable<T>> {
         }
         List<NForWhile.NForWhileTerm<T>> terms = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            terms.add(new NForWhile.NForWhileTerm<T>(NForWhile.NForWhileCondition.LESS_THAN, to[i]));
+            terms.add(new NForWhile.NForWhileTerm<>(NForWhile.NForWhileCondition.LESS_THAN, to[i]));
         }
         return to(terms.toArray(new NForWhile.NForWhileTerm[n]));
     }
 
-    public NFor to(NForWhile.NForWhileTerm<T>... terms) {
+    @SafeVarargs
+    public final NFor to(NForWhile.NForWhileTerm<T>... terms) {
         if (this.n == 0) {
             this.n = terms.length;
         } else if (this.n != terms.length) {
@@ -89,7 +93,7 @@ class NForPart<T extends Number & Comparable<T>> {
         if (this.by == null) {
             this.by = defaultBy(clazz, n);
         }
-        return new NFor<T>(this, new NForWhile<T>(terms));
+        return new NFor<>(this, new NForWhile<>(terms));
     }
 
     private static <U extends Number & Comparable<U>> NForFrom<U> defaultFrom(Class clazz, int n) {
@@ -111,10 +115,10 @@ class NForPart<T extends Number & Comparable<T>> {
                 throw new UnsupportedOperationException(String.format("Unsupported class %s", clazz.getSimpleName()));
             }
         }
-        return new NForFrom<U>(list.toArray((U[]) Array.newInstance(clazz, n)));
+        return new NForFrom<>(list.toArray((U[]) Array.newInstance(clazz, n)));
     }
 
-    private static final <U extends Number & Comparable<U>> NForBy<U> defaultBy(final Class clazz, final int n) {
+    private static <U extends Number & Comparable<U>> NForBy<U> defaultBy(final Class clazz, final int n) {
         List<U> list = new ArrayList<>(n);
         U toAdd;
         if (clazz == Byte.class) {
@@ -135,7 +139,7 @@ class NForPart<T extends Number & Comparable<T>> {
         for (int i = 0; i < n; i++) {
             list.add(toAdd);
         }
-        return new NForBy<U>(list.toArray((U[]) Array.newInstance(clazz, n)));
+        return new NForBy<>(list.toArray((U[]) Array.newInstance(clazz, n)));
     }
 
 }

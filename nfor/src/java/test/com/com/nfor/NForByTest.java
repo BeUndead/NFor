@@ -9,7 +9,7 @@ public class NForByTest {
 
     @Test
     public void testByForByte() {
-        NForBy<Byte> nForBy = new NForBy<Byte>((byte) 1, (byte) 2, (byte) 3);
+        NForBy<Byte> nForBy = new NForBy<>((byte) 1, (byte) 2, (byte) 3);
         Byte[] retrieved = nForBy.get();
         Byte[] expected = new Byte[] {(byte) 1, (byte) 2, (byte) 3};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
@@ -20,7 +20,7 @@ public class NForByTest {
 
     @Test
     public void testByForShort() {
-        NForBy<Short> nForBy = new NForBy<Short>((short) 1, (short) 2, (short) 3);
+        NForBy<Short> nForBy = new NForBy<>((short) 1, (short) 2, (short) 3);
         Short[] retrieved = nForBy.get();
         Short[] expected = new Short[] {(short) 1, (short) 2, (short) 3};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
@@ -31,7 +31,7 @@ public class NForByTest {
 
     @Test
     public void testByForInteger() {
-        NForBy<Integer> nForBy = new NForBy<Integer>(1, 2, 3);
+        NForBy<Integer> nForBy = new NForBy<>(1, 2, 3);
         Integer[] retrieved = nForBy.get();
         Integer[] expected = new Integer[] {1, 2, 3};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
@@ -42,9 +42,9 @@ public class NForByTest {
 
     @Test
     public void testByForLong() {
-        NForBy<Long> nForBy = new NForBy<Long>(1L, 2L, 3L);
+        NForBy<Long> nForBy = new NForBy<>(1l, 2l, 3l);
         Long[] retrieved = nForBy.get();
-        Long[] expected = new Long[] {1L, 2L, 3L};
+        Long[] expected = new Long[] {1l, 2l, 3l};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
         IntStream.range(0, expected.length).forEach(
                 i -> Assert.assertEquals(String.format("Unexpected value for index %d", i),
@@ -53,9 +53,9 @@ public class NForByTest {
 
     @Test
     public void testByForFloat() {
-        NForBy<Float> nForBy = new NForBy<Float>(1F, 2F, 3F);
+        NForBy<Float> nForBy = new NForBy<>(1f, 2f, 3f);
         Float[] retrieved = nForBy.get();
-        Float[] expected = new Float[] {1F, 2F, 3F};
+        Float[] expected = new Float[] {1f, 2f, 3f};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
         IntStream.range(0, expected.length).forEach(
                 i -> Assert.assertEquals(String.format("Unexpected value for index %d", i),
@@ -64,9 +64,9 @@ public class NForByTest {
 
     @Test
     public void testByForDouble() {
-        NForBy<Double> nForBy = new NForBy<Double>(1D, 2D, 3D);
+        NForBy<Double> nForBy = new NForBy<>(1d, 2d, 3d);
         Double[] retrieved = nForBy.get();
-        Double[] expected = new Double[] {1D, 2D, 3D};
+        Double[] expected = new Double[] {1d, 2d, 3d};
         Assert.assertEquals("Unexpected length", expected.length, nForBy.get().length);
         IntStream.range(0, expected.length).forEach(
                 i -> Assert.assertEquals(String.format("Unexpected value for index %d", i),
@@ -75,7 +75,7 @@ public class NForByTest {
 
     @Test
     public void testBySize() {
-        NForBy<Integer> nForBy = new NForBy<Integer>(1, 2, 3);
+        NForBy<Integer> nForBy = new NForBy<>(1, 2, 3);
         Assert.assertEquals("Unexpected length", 3, nForBy.size());
     }
 
